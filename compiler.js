@@ -284,7 +284,7 @@ var handlers = {
   },
 
   ClassDeclaration: function(parent, node, index) {
-    // var c = new Class(name, superClassName);
+    // var c = new ClassDeclaration(name, superClassName);
     // c.addFunction(name, fn);
     // c.addFunction(name, fn);
     // replace(parent.body, node, c.toNodes());
