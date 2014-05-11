@@ -1,15 +1,5 @@
-class Foo {
-  constructor(options) {
-
-  }
-  sayHi() {
-
-  }
-}
-
 class Controller extends Foo {
   constructor(options) {
-
     this.firstName = 'stefan';
     this.lastName = 'penner';
 
@@ -35,8 +25,8 @@ class Controller extends Foo {
 
   fullName() {
     return [
-      this.firstName,
+      this.fullName,
       this.lastName
     ].compact().join(' ');
   }
-};
+}

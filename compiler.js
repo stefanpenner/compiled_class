@@ -3,12 +3,9 @@ var escodegen = require('escodegen');
 var util = require('util');
 var fs = require('fs');
 
-var input = fs.readFileSync('input.js');
-var ast = esprima.parse(input);
-
 function replace(array, a, b) {
   var index = array.indexOf(a);
-  if (index) {
+  if (index > -1) {
 
     if (!util.isArray(a)) { a = [a]; }
     if (!util.isArray(b)) { b = [b]; }
@@ -316,7 +313,6 @@ var handlers = {
     classDefinition.push(setConstructor(className));
 
     Object.keys(functions).forEach(function(name) {
-      console.log(name);
       var fn = functions[name];
       fn.type = 'FunctionExpression';
       classDefinition.push(addToPrototype(className, name, fn));
@@ -326,18 +322,22 @@ var handlers = {
   }
 };
 
-traverse(ast, function(parent) {
-  if (parent && parent.body) {
-    for (var i = 0; i < parent.body.length; i++) {
-      var node = parent.body[i];
+module.exports.compile = function(code) {
+  var ast = esprima.parse(code);
 
-      var handler = handlers[node.type];
+  traverse(ast, function(parent) {
+    if (parent && parent.body) {
+      for (var i = 0; i < parent.body.length; i++) {
+        var node = parent.body[i];
 
-      if (handler) {
-        handler(parent, node, i);
+        var handler = handlers[node.type];
+
+        if (handler) {
+          handler(parent, node, i);
+        }
       }
     }
-  }
-});
+  });
 
-console.log(escodegen.generate(ast));
+  return escodegen.generate(ast);
+};
